@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Droma | The Power of AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Geist:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "secondary-fixed-dim": "#00dbe9",
+        "on-tertiary-container": "#353737",
+        "surface": "#131313",
+        "on-secondary-fixed": "#002022",
+        "on-surface-variant": "#c4c7c7",
+        "background": "#131313",
+        "on-primary": "#2f3131",
+        "surface-dim": "#131313",
+        "primary-container": "#a0a0a0",
+        "inverse-surface": "#e5e2e1",
+        "error-container": "#93000a",
+        "primary-fixed-dim": "#c7c6c6",
+        "on-error": "#690005",
+        "tertiary-container": "#9fa0a0",
+        "on-surface": "#e5e2e1",
+        "secondary": "#d3fbff",
+        "surface-container-low": "#1c1b1b",
+        "surface-tint": "#c7c6c6",
+        "on-background": "#e5e2e1",
+        "surface-container-lowest": "#0e0e0e",
+        "on-tertiary-fixed-variant": "#454747",
+        "surface-container-high": "#2a2a2a",
+        "on-primary-fixed": "#1a1c1c",
+        "surface-container": "#201f1f",
+        "surface-container-highest": "#353534",
+        "on-tertiary-fixed": "#1a1c1c",
+        "secondary-fixed": "#7df4ff",
+        "surface-variant": "#353534",
+        "secondary-container": "#00eefc",
+        "inverse-primary": "#5e5e5f",
+        "on-secondary-fixed-variant": "#004f54",
+        "tertiary-fixed": "#e2e2e2",
+        "inverse-on-surface": "#313030",
+        "on-error-container": "#ffdad6",
+        "on-primary-fixed-variant": "#464747",
+        "on-secondary": "#00363a",
+        "surface-bright": "#393939",
+        "outline-variant": "#444748",
+        "on-primary-container": "#363737",
+        "error": "#ffb4ab",
+        "primary-fixed": "#e3e2e2",
+        "tertiary": "#c6c6c7",
+        "on-tertiary": "#2f3131",
+        "primary": "#c7c6c6",
+        "outline": "#8e9192",
+        "tertiary-fixed-dim": "#c6c6c7",
+        "on-secondary-container": "#00686f"
+      },
+      borderRadius: {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      spacing: {
+        "container-padding-desktop": "40px",
+        "container-padding-mobile": "20px",
+        "bento-gap": "16px",
+        "unit": "8px",
+        "section-margin": "80px"
+      },
+      fontFamily: {
+        "display-lg": ["Geist"],
+        "headline-lg": ["Geist"],
+        "label-sm": ["JetBrains Mono"],
+        "body-md": ["Geist"],
+        "headline-lg-mobile": ["Geist"]
+      },
+      fontSize: {
+        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+        "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400" }],
+        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+      }
+    },
+  },
+}
+</script>
+<style>
+body {
+    background-color: #131313;
+    color: #e5e2e1;
+    overflow-x: hidden;
+}
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.bento-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(12, 1fr);
+}
+.orbit-line {
+    position: absolute;
+    border: 1px solid rgba(142, 145, 146, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+}
+#particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+/* 顶部导航微弱发光 */
+.glow-header {
+  box-shadow: 0 0 18px rgba(0, 219, 233, 0.12);
+}
+</style>
+</head>
+
+<body class="font-body-md text-body-md">
+
+<canvas id="particles"></canvas>
+
+<!-- 顶部导航 已添加微弱发光 -->
+<header class="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-md border-b border-outline-variant/30 glow-header">
+<div class="flex justify-between items-center px-container-padding-desktop py-6 max-w-7xl mx-auto">
+<div class="font-display-lg text-headline-lg font-bold text-on-surface tracking-tighter">Droma</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-secondary-fixed-dim pb-1 transition-all duration-300" href="#">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors hover:text-secondary-fixed-dim" href="#">Tech</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors hover:text-secondary-fixed-dim" href="#">Download</a>
+</nav>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold scale-95 active:scale-90 transition-transform hover:bg-primary-fixed-dim">
+Get Started
+</button>
+</div>
+</header>
+
+<main>
+<section class="relative min-h-screen flex items-center px-container-padding-desktop max-w-7xl mx-auto pt-20">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+<div class="z-10">
+<span class="inline-block px-3 py-1 bg-surface-container-high rounded-full font-label-sm text-label-sm text-secondary-fixed-dim mb-6">
+MOBILE AI ARCHITECTURE v2.0
+</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-8 max-w-xl">
+Droma: The Power of AI, Carved into Your Phone.
+</h1>
+<p class="text-on-surface-variant max-w-md mb-10 leading-relaxed">
+Experience industrial-grade local LLM deployment. Engineered for performance, privacy, and the precision of machined titanium.
+</p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-bold transition-all hover:bg-primary-fixed hover:shadow-[0_0_20px_rgba(0,219,233,0.2)]">
+Launch Console
+</button>
+<button class="border border-outline px-8 py-4 rounded-lg font-bold transition-all hover:border-secondary-fixed-dim hover:text-secondary-fixed-dim">
+Documentation
+</button>
+</div>
+</div>
+<div class="relative flex justify-center lg:justify-end">
+<div class="relative w-full max-w-2xl">
+<img alt="Droma Hero Sculpture" class="w-full h-auto drop-shadow-[0_0_60px_rgba(0,219,233,0.1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiO644IT9HgPltH4wCl8-gkWs6G1U5bvXoUAQ4HZX1fYufmxJd6u9JnNTwXLrvCtzAsy3udHITcn1ytnbHj7xypeaWTboBAE4Iq9qaoJhoUOJt5ZO0PHom38lKo6pTCyWcVZpXPmNJu_uLT8OOtcrdPL8e_HgtIRqJL5shCwzb4eWmB59wklLpC0gSH84sZMKQrZYI19kp2IaEOOs8Jw5QaJaCROwJVpy5vIL1Y9KKDaHdcAh5y5XRzebYtgwg3WzPQyyuob0PKzx7"/>
+</div>
+</div>
+</div>
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+<span class="font-label-sm text-label-sm tracking-widest uppercase">Explore</span>
+<span class="material-symbols-outlined animate-bounce">expand_more</span>
+</div>
+</section>
+
+<section class="py-section-margin px-container-padding-desktop max-w-7xl mx-auto">
+<div class="mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Technical Luxury</h2>
+<div class="h-px w-24 bg-secondary-fixed-dim"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-bento-gap">
+<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl relative overflow-hidden group transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<div class="flex justify-between items-start mb-12">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">NPU Acceleration</h3>
+<p class="text-on-surface-variant max-w-md">Proprietary neural engines optimized for local inference with zero latency hardware handshake.</p>
+</div>
+<span class="material-symbols-outlined text-secondary-fixed-dim text-4xl">memory</span>
+</div>
+<div class="mt-8 flex items-end justify-between">
+<div class="font-label-sm text-label-sm text-on-surface-variant space-y-1">
+<div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></div> CORE STATUS: OPTIMIZED</div>
+<div class="flex items-center gap-2 text-outline">LATENCY: 0.04ms</div>
+</div>
+<img class="w-32 h-32 object-cover rounded-lg opacity-40 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9l-qhOhJcMoNmHa1kAJm940bahf5ijzqoRFHZzUACpDWgu1qQfSFhUzcjcjPPjeRE9QJTRMgusEYrDgWY4kOe5oSnd1nntYMNaTnrCM_NyLKlQHb_ugakKM_-MZpZxB1yY4xWoryXNo5d0OMw1XyoVXppKLRR5ICcEBWj4S64qdEjBMoJiMfQOdHejgFsSfVibQ3_iLYdzqXabcFUIf6BCQLxGXE2iA3lfXl-yLtg23YxEwPIXKAeiRziUI7PojCv4semNBil3Bis"/>
+</div>
+</div>
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl flex flex-col justify-between transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<div>
+<div class="flex justify-between mb-8">
+<span class="material-symbols-outlined text-secondary-fixed-dim">encrypted</span>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim shadow-[0_0_8px_#00dbe9]"></div>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-4">Privacy First</h3>
+<p class="text-on-surface-variant">Your data never leaves the hardware. Localized weights, zero cloud telemetry.</p>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/20">
+<code class="font-label-sm text-label-sm text-outline">ENCRYPTION: AES-256-GCM</code>
+</div>
+</div>
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-6 uppercase tracking-widest">Neural Synapse</h3>
+<div class="flex flex-col gap-4">
+<div class="h-1 bg-surface-container-high w-full rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim w-3/4"></div>
+</div>
+<div class="h-1 bg-surface-container-high w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/2"></div>
+</div>
+<div class="h-1 bg-surface-container-high w-full rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim w-5/6"></div>
+</div>
+</div>
+<p class="mt-8 text-on-surface-variant font-label-sm text-label-sm">DYNAMIC RESOURCE ALLOCATION ACTIVE</p>
+</div>
+<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl group relative overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<div class="z-10 relative">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">Seamless Integration</h3>
+<p class="text-on-surface-variant max-w-sm">Connect your local models to any interface via the Droma Bridge API.</p>
+</div>
+<div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[160px]">settings_input_component</span>
+</div>
+</div>
+</div>
+</section>
+
+<section class="py-section-margin px-container-padding-desktop relative overflow-hidden">
+<div class="orbit-line w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>
+<div class="orbit-line w-[800px] h-[800px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
+<div class="orbit-line w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+<div class="max-w-4xl mx-auto bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant/30 p-16 rounded-3xl text-center relative z-10">
+<h2 class="font-display-lg text-display-lg text-on-surface mb-6">Own the Edge.</h2>
+<p class="text-on-surface-variant mb-12 max-w-xl mx-auto">
+Download the Droma Mobile Console and unlock the full potential of your device's neural processing unit.
+</p>
+<div class="flex flex-col md:flex-row items-center justify-center gap-12">
+<div class="p-4 bg-white rounded-2xl shadow-[0_0_40px_rgba(0,219,233,0.1)]">
+<div class="w-40 h-40 bg-surface-container flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface text-6xl">qr_code_2</span>
+</div>
+</div>
+<div class="text-left space-y-4">
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary-fixed-dim transition-colors">
+<span class="material-symbols-outlined group-hover:text-secondary-fixed-dim">apps</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline">Available on</div>
+<div class="font-bold text-on-surface">App Store</div>
+</div>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary-fixed-dim transition-colors">
+<span class="material-symbols-outlined group-hover:text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline">Available on</div>
+<div class="font-bold text-on-surface">Play Store</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="bg-surface w-full py-16 border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-container-padding-desktop gap-6 max-w-7xl mx-auto">
+<div class="flex flex-col items-center md:items-start gap-4">
+<div class="font-display-lg text-headline-lg font-bold text-on-surface">Droma</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Droma. Carved for Performance.</p>
+</div>
+<div class="flex gap-8 mt-8 md:mt-0">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Documentation</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Privacy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Security</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Terms</a>
+</div>
+</div>
+</footer>
+
+<script>
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w = window.innerWidth, h = window.innerHeight;
+canvas.width = w; canvas.height = h;
+
+const points = [];
+const mouse = { x: -1000, y: -1000, radius: 160 };
+
+class Point {
+  constructor(){
+    this.x = Math.random()*w;
+    this.y = Math.random()*h;
+    this.vx = (Math.random()-0.5)*0.4;
+    this.vy = (Math.random()-0.5)*0.4;
+  }
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x<0||this.x>w)this.vx*=-1;
+    if(this.y<0||this.y>h)this.vy*=-1;
+    let dx = this.x - mouse.x;
+    let dy = this.y - mouse.y;
+    let d = Math.hypot(dx,dy);
+    if(d < mouse.radius){
+      let a = Math.atan2(dy,dx);
+      this.x = mouse.x + Math.cos(a)*mouse.radius;
+      this.y = mouse.y + Math.sin(a)*mouse.radius;
+    }
+  }
+  draw(){
+    ctx.save();
+    ctx.shadowColor = "#00dbe9";
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 1.8, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,219,233,0.4)';
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function connect(){
+  for(let i=0;i<points.length;i++){
+    for(let j=i+1;j<points.length;j++){
+      let dx = points[i].x-points[j].x;
+      let dy = points[i].y-points[j].y;
+      let d = Math.hypot(dx,dy);
+      if(d<120){
+        ctx.save();
+        ctx.strokeStyle = `rgba(0,219,233,${0.25-d/120*0.25})`;
+        ctx.shadowColor = "#00dbe9";
+        ctx.shadowBlur = 4;
+        ctx.lineWidth=0.6;
+        ctx.beginPath();
+        ctx.moveTo(points[i].x,points[i].y);
+        ctx.lineTo(points[j].x,points[j].y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+}
+
+function init(){
+  points.length=0;
+  for(let i=0;i<Math.floor(w/7);i++) points.push(new Point());
+}
+
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  points.forEach(p=>{p.update();p.draw()});
+  connect();
+  requestAnimationFrame(animate);
+}
+
+init(); animate();
+
+window.addEventListener('mousemove',e=>{mouse.x=e.x;mouse.y=e.y});
+window.addEventListener('resize',()=>{
+  w=innerWidth;h=innerHeight;canvas.width=w;canvas.height=h;init();
+});
+</script>
+</body>
+</html>
