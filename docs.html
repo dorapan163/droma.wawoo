@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Droma Documentation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Geist:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        "secondary-fixed-dim": "#00dbe9",
+        "on-surface-variant": "#c4c7c7",
+        "background": "#131313",
+        "on-primary": "#2f3131",
+        "on-surface": "#e5e2e1",
+        "surface-container-low": "#1c1b1b",
+        "surface-container-lowest": "#0e0e0e",
+        "surface-container-high": "#2a2a2a",
+        "surface-container": "#201f1f",
+        "primary": "#c7c6c6",
+        "outline": "#8e9192",
+        "outline-variant": "#444748",
+        "on-secondary-container": "#00686f"
+      },
+      spacing: {
+        "container-padding-desktop": "40px",
+        "container-padding-mobile": "20px",
+        "section-margin": "80px"
+      },
+      fontFamily: {
+        "display-lg": ["Geist"],
+        "headline-lg": ["Geist"],
+        "label-sm": ["JetBrains Mono"],
+        "body-md": ["Geist"],
+        "headline-lg-mobile": ["Geist"]
+      },
+      fontSize: {
+        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+      }
+    },
+  },
+}
+</script>
+<style>
+html { scroll-behavior: smooth; }
+body { background-color: #131313; color: #e5e2e1; overflow-x: hidden; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+#particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+.glow-header { box-shadow: 0 0 18px rgba(0, 219, 233, 0.12); }
+.nav-link { position: relative; padding-bottom: 4px; transition: color 0.3s; }
+.nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #00dbe9; transition: width 0.3s; }
+.nav-link.active { color: #c7c6c6; font-weight: 700; }
+.nav-link.active::after { width: 100%; }
+.section-tag {
+  display: inline-flex; padding: 4px 12px; border-radius: 9999px;
+  background: rgba(42, 42, 42, 0.8); border: 1px solid rgba(68, 71, 72, 0.5);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em;
+  color: #00dbe9; text-transform: uppercase;
+}
+.docs-layout { display: grid; gap: 32px; }
+@media (min-width: 1024px) {
+  .docs-layout { grid-template-columns: 240px 1fr; align-items: start; }
+}
+.docs-sidebar {
+  position: sticky; top: 96px;
+  padding: 20px; border-radius: 12px;
+  border: 1px solid rgba(68, 71, 72, 0.4);
+  background: rgba(14, 14, 14, 0.8);
+}
+.docs-sidebar a {
+  display: block; padding: 8px 12px; border-radius: 8px;
+  font-size: 14px; color: #c4c7c7; transition: color 0.2s, background 0.2s;
+}
+.docs-sidebar a:hover { color: #e5e2e1; background: rgba(42, 42, 42, 0.6); }
+.docs-section {
+  scroll-margin-top: 112px; margin-bottom: 48px;
+  padding-bottom: 48px; border-bottom: 1px solid rgba(68, 71, 72, 0.3);
+}
+.docs-section:last-child { border-bottom: none; }
+.docs-section h2 { margin-bottom: 16px; }
+.docs-section p { color: #c4c7c7; margin-bottom: 12px; line-height: 1.65; }
+.docs-faq dt { font-weight: 600; color: #e5e2e1; margin-top: 16px; margin-bottom: 4px; }
+.docs-faq dd { color: #c4c7c7; margin-left: 0; line-height: 1.6; }
+#mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+#mobile-menu.open { max-height: 400px; }
+#lang-toggle, #lang-toggle-mobile {
+  min-width: 44px; font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; letter-spacing: 0.05em;
+}
+</style>
+<script src="src/i18n.js"></script>
+</head>
+<body class="font-body-md text-body-md">
+
+<canvas id="particles"></canvas>
+
+<header class="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-md border-b border-outline-variant/30 glow-header">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-5 max-w-7xl mx-auto">
+<a href="index.html" class="font-display-lg text-headline-lg font-bold text-on-surface tracking-tighter">Droma</a>
+<nav class="hidden md:flex items-center gap-8" aria-label="Main">
+<a class="nav-link font-body-md text-on-surface-variant hover:text-on-surface" href="index.html#features" data-i18n="nav.features">Features</a>
+<a class="nav-link font-body-md text-on-surface-variant hover:text-on-surface" href="index.html#tech" data-i18n="nav.tech">Tech</a>
+<a class="nav-link font-body-md text-on-surface-variant hover:text-on-surface" href="index.html#download" data-i18n="nav.download">Download</a>
+<a class="nav-link font-body-md text-on-surface active" href="docs.html" data-i18n="nav.docs">Documentation</a>
+</nav>
+<div class="flex items-center gap-3">
+<button id="menu-toggle" class="md:hidden p-2 text-on-surface-variant hover:text-on-surface" data-i18n-aria="menu.aria" aria-label="Toggle menu">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<a href="index.html#download" class="hidden sm:block bg-primary text-on-primary px-5 py-2 rounded-lg font-bold hover:bg-primary-fixed-dim transition-colors" data-i18n="docs.downloadCta">Download Droma</a>
+<button type="button" id="lang-toggle" class="hidden sm:flex items-center justify-center px-3 py-2 rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-secondary-fixed-dim hover:border-secondary-fixed-dim transition-colors" data-i18n-aria="lang.aria" aria-label="Switch language"><span data-lang-toggle-label>中文</span></button>
+</div>
+</div>
+<div id="mobile-menu" class="md:hidden border-t border-outline-variant/20 bg-background/95 backdrop-blur-md">
+<nav class="flex flex-col px-container-padding-mobile py-4 gap-3">
+<a class="font-body-md text-on-surface-variant" href="index.html#features" data-i18n="nav.features">Features</a>
+<a class="font-body-md text-on-surface-variant" href="index.html#tech" data-i18n="nav.tech">Tech</a>
+<a class="font-body-md text-on-surface-variant" href="index.html#download" data-i18n="nav.download">Download</a>
+<a class="font-body-md text-on-surface" href="docs.html" data-i18n="nav.docs">Documentation</a>
+<a href="index.html#download" class="bg-primary text-on-primary px-5 py-3 rounded-lg font-bold text-center mt-2" data-i18n="docs.downloadCta">Download Droma</a>
+<button type="button" id="lang-toggle-mobile" class="w-full py-3 rounded-lg border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm" data-i18n-aria="lang.aria"><span data-lang-toggle-label>中文</span></button>
+</nav>
+</div>
+</header>
+
+<main class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop pt-28 pb-20">
+<a href="index.html" class="inline-flex items-center gap-2 text-on-surface-variant hover:text-secondary-fixed-dim transition-colors mb-8 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+<span data-i18n="docs.backHome">Back to website</span>
+</a>
+
+<header class="mb-12">
+<span class="section-tag mb-4" data-i18n="nav.docs">Documentation</span>
+<h1 class="font-display-lg text-display-lg md:text-[40px] text-on-surface mb-4" data-i18n="docs.hero.title">Droma User Guide</h1>
+<p class="text-on-surface-variant max-w-2xl text-lg" data-i18n="docs.hero.subtitle">Learn how to install, configure, and run local AI on your device.</p>
+</header>
+
+<div class="docs-layout">
+<aside class="docs-sidebar">
+<p class="font-label-sm text-label-sm text-secondary-fixed-dim mb-4 uppercase" data-i18n="docs.sidebar.title">Contents</p>
+<nav class="space-y-1">
+<a href="#getting-started" data-i18n="docs.sidebar.gettingStarted">Getting Started</a>
+<a href="#install" data-i18n="docs.sidebar.install">Installation</a>
+<a href="#models" data-i18n="docs.sidebar.models">Model Hub</a>
+<a href="#chat" data-i18n="docs.sidebar.chat">Chat</a>
+<a href="#settings" data-i18n="docs.sidebar.settings">Inference Settings</a>
+<a href="#api" data-i18n="docs.sidebar.api">Bridge API</a>
+<a href="#troubleshoot" data-i18n="docs.sidebar.troubleshoot">Troubleshooting</a>
+<a href="#faq" data-i18n="docs.sidebar.faq">FAQ</a>
+</nav>
+</aside>
+
+<article class="min-w-0">
+<section id="getting-started" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.gettingStarted.title">Getting Started</h2>
+<p data-i18n="docs.gettingStarted.p1">Droma is a mobile console for running large language models entirely on your device. No cloud account is required after setup.</p>
+<p data-i18n="docs.gettingStarted.p2">After installing the app, complete the first-run wizard to pick a default model tier and enable on-device encryption for stored weights.</p>
+<p data-i18n="docs.gettingStarted.p3">Open the Console tab to start your first conversation. All inference happens locally using your phone's CPU, GPU, or NPU.</p>
+</section>
+
+<section id="install" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.install.title">Installation</h2>
+<p data-i18n="docs.install.p1">Download Droma from Google Play or the App Store, or scan the QR code on the download page of our website.</p>
+<p data-i18n="docs.install.p2">Grant storage permission when prompted so the app can import and cache model files. Optional microphone access is only needed if you use voice input.</p>
+<p data-i18n="docs.install.p3">Keep at least 6 GB of free RAM and sufficient storage for your chosen models (typically 4–12 GB per 7B-class model depending on quantization).</p>
+</section>
+
+<section id="models" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.models.title">Model Hub</h2>
+<p data-i18n="docs.models.p1">Open Model Hub from the bottom navigation to browse the curated catalog or import your own GGUF, ONNX, or Droma Pack (.drp) files.</p>
+<p data-i18n="docs.models.p2">Tap a model card to see size, quantization, and estimated tokens per second on your device tier. Use one-tap quantization to match your hardware.</p>
+<p data-i18n="docs.models.p3">Downloaded weights are stored in the app sandbox and encrypted at rest with AES-256-GCM. Delete unused models from Model Hub to free space.</p>
+</section>
+
+<section id="chat" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.chat.title">Chat</h2>
+<p data-i18n="docs.chat.p1">The Chat screen supports multiple parallel sessions. Each session keeps its own context window and history on device.</p>
+<p data-i18n="docs.chat.p2">Long-press a message to copy, regenerate, or branch the conversation. Swipe left on a session in the drawer to archive or delete it.</p>
+<p data-i18n="docs.chat.p3">Streaming responses appear token-by-token. If generation feels slow, try a smaller quantization (e.g. Q4_K_M) or reduce context length in settings.</p>
+</section>
+
+<section id="settings" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.settings.title">Inference Settings</h2>
+<p data-i18n="docs.settings.p1">From Settings → Inference, adjust temperature, top-p, top-k, repeat penalty, and max context length before each session or set defaults globally.</p>
+<p data-i18n="docs.settings.p2">Enable NPU / GPU acceleration when your chipset supports it. The app falls back to CPU (NEON / AVX2) automatically if hardware paths are unavailable.</p>
+<p data-i18n="docs.settings.p3">Advanced users can export a diagnostic log (no message content) to help support tune backend selection.</p>
+</section>
+
+<section id="api" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.api.title">Bridge API</h2>
+<p data-i18n="docs.api.p1">Droma Bridge exposes OpenAI-compatible HTTP and WebSocket endpoints on your local network while the app is in the foreground.</p>
+<p data-i18n="docs.api.p2">Use the API tab to copy the base URL and API key. Third-party clients can list models, create chat completions, and stream tokens against your loaded local model.</p>
+</section>
+
+<section id="troubleshoot" class="docs-section">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.troubleshoot.title">Troubleshooting</h2>
+<p data-i18n="docs.troubleshoot.p1">Model fails to load: verify free storage, re-download the weight file, and ensure the format is supported (GGUF recommended).</p>
+<p data-i18n="docs.troubleshoot.p2">App closes under load: close background apps, lower context length, or switch to a smaller model. Thermal throttling may temporarily reduce speed.</p>
+<p data-i18n="docs.troubleshoot.p3">No network features work offline by design. Bridge API is only available when Droma is open and the local server toggle is enabled.</p>
+</section>
+
+<section id="faq" class="docs-section docs-faq">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface" data-i18n="docs.faq.title">FAQ</h2>
+<dl>
+<dt data-i18n="docs.faq.q1">Is my data sent to the cloud?</dt>
+<dd data-i18n="docs.faq.a1">No. Chat history and model weights stay on your device unless you explicitly export or use Bridge API on your local network.</dd>
+<dt data-i18n="docs.faq.q2">Which models are supported?</dt>
+<dd data-i18n="docs.faq.a2">GGUF is the primary format. ONNX Mobile and custom Droma Packs are supported via Model Hub import pipelines.</dd>
+<dt data-i18n="docs.faq.q3">How do I update the app?</dt>
+<dd data-i18n="docs.faq.a3">Updates are delivered through your platform store like any other app. Model files are managed separately inside Model Hub.</dd>
+</dl>
+</section>
+</article>
+</div>
+</main>
+
+<footer class="bg-surface-container-low border-t border-outline-variant/20 py-12 mt-8">
+<div class="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop flex flex-col sm:flex-row justify-between items-center gap-4">
+<p class="font-label-sm text-label-sm text-on-surface-variant" data-i18n="footer.tagline">© 2024 Droma. Carved for Performance.</p>
+<a href="index.html#download" class="font-label-sm text-label-sm text-secondary-fixed-dim hover:underline" data-i18n="docs.downloadCta">Download Droma</a>
+</div>
+</footer>
+
+<script>
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w = window.innerWidth, h = window.innerHeight;
+canvas.width = w; canvas.height = h;
+const points = [];
+const mouse = { x: -1000, y: -1000, radius: 120 };
+class Point {
+  constructor() {
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    const s = 0.5 + Math.random() * 0.6;
+    const a = Math.random() * Math.PI * 2;
+    this.vx = Math.cos(a) * s;
+    this.vy = Math.sin(a) * s;
+    this.radius = 0.8 + Math.random() * 2.2;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > w) this.vx *= -1;
+    if (this.y < 0 || this.y > h) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,219,233,0.35)';
+    ctx.fill();
+  }
+}
+function initParticles() {
+  points.length = 0;
+  for (let i = 0; i < Math.floor(w / 10); i++) points.push(new Point());
+}
+function animateParticles() {
+  ctx.clearRect(0, 0, w, h);
+  points.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+initParticles();
+animateParticles();
+window.addEventListener('resize', () => {
+  w = innerWidth; h = innerHeight;
+  canvas.width = w; canvas.height = h;
+  initParticles();
+});
+
+const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    menuToggle.querySelector('.material-symbols-outlined').textContent = open ? 'close' : 'menu';
+  });
+}
+
+DromaI18n.init();
+document.addEventListener('droma:langchange', () => {
+  document.title = DromaI18n.t('docs.meta.title');
+});
+document.title = DromaI18n.t('docs.meta.title');
+</script>
+</body>
+</html>

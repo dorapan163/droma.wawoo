@@ -32,7 +32,7 @@ tailwind.config = {
         "surface-container-low": "#1c1b1b",
         "surface-tint": "#c7c6c6",
         "on-background": "#e5e2e1",
-        "surface-container-lowest": "#0e0e0e",
+        "surface-container-lowest": "#382738",
         "on-tertiary-fixed-variant": "#454747",
         "surface-container-high": "#2a2a2a",
         "on-primary-fixed": "#1a1c1c",
@@ -93,129 +93,281 @@ tailwind.config = {
 }
 </script>
 <style>
+html { scroll-behavior: smooth; }
 body {
-    background-color: #131313;
-    color: #e5e2e1;
-    overflow-x: hidden;
+  background-color: #131313;
+  color: #e5e2e1;
+  overflow-x: hidden;
 }
 .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 .bento-grid {
-    display: grid;
-    gap: 16px;
-    grid-template-columns: repeat(12, 1fr);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, 1fr);
 }
 .orbit-line {
-    position: absolute;
-    border: 1px solid rgba(142, 145, 146, 0.2);
-    border-radius: 50%;
-    pointer-events: none;
+  position: absolute;
+  border: 1px solid rgba(142, 145, 146, 0.2);
+  border-radius: 50%;
+  pointer-events: none;
 }
 #particles {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: -1;
-    pointer-events: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: -1;
+  pointer-events: none;
 }
-/* 顶部导航微弱发光 */
 .glow-header {
   box-shadow: 0 0 18px rgba(0, 219, 233, 0.12);
 }
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #00dbe9;
+  transition: width 0.3s;
+}
+.nav-link.active {
+  color: #c7c6c6;
+  font-weight: 700;
+}
+.nav-link.active::after { width: 100%; }
+.page-section {
+  scroll-margin-top: 96px;
+}
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(42, 42, 42, 0.8);
+  border: 1px solid rgba(68, 71, 72, 0.5);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: #00dbe9;
+  text-transform: uppercase;
+}
+.arch-layer {
+  position: relative;
+  padding: 20px 24px;
+  border: 2px solid rgba(68, 71, 72, 0.4);
+  border-radius: 12px;
+  background: rgba(14, 14, 14, 0.6);
+  transition: border-color 0.3s, transform 0.3s;
+}
+.arch-layer:hover {
+  border-color: rgba(0, 219, 233, 0.4);
+  transform: translateX(4px);
+}
+.arch-connector {
+  width: 2px;
+  height: 24px;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, rgba(0,219,233,0.5), rgba(0,219,233,0.1));
+}
+.platform-card {
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.platform-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 219, 233, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 219, 233, 0.08);
+}
+.platform-card-qr {
+  display: block;
+  width: 100%;
+  max-width: 140px;
+  margin: 0 auto 16px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 24px rgba(0, 219, 233, 0.08);
+}
+.platform-card-qr img {
+  display: block;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+#mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+#mobile-menu.open { max-height: 360px; }
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+.hero-carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+  filter: drop-shadow(0 0 60px rgba(0, 219, 233, 0.1));
+}
+.hero-carousel-slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+.hero-carousel-dots {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+.hero-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(142, 145, 146, 0.6);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
+}
+.hero-carousel-dot.active,
+.hero-carousel-dot:hover {
+  background: #00dbe9;
+  border-color: #00dbe9;
+}
+.hero-carousel-dot.active { transform: scale(1.15); }
+#lang-toggle,
+#lang-toggle-mobile {
+  min-width: 44px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
 </style>
+<script src="src/i18n.js"></script>
 </head>
 
 <body class="font-body-md text-body-md">
 
 <canvas id="particles"></canvas>
 
-<!-- 顶部导航 已添加微弱发光 -->
 <header class="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-md border-b border-outline-variant/30 glow-header">
-<div class="flex justify-between items-center px-container-padding-desktop py-6 max-w-7xl mx-auto">
-<div class="font-display-lg text-headline-lg font-bold text-on-surface tracking-tighter">Droma</div>
-<nav class="hidden md:flex items-center gap-10">
-<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-secondary-fixed-dim pb-1 transition-all duration-300" href="#">Features</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors hover:text-secondary-fixed-dim" href="#">Tech</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors hover:text-secondary-fixed-dim" href="#">Download</a>
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-5 max-w-7xl mx-auto">
+<a href="#features" class="font-display-lg text-headline-lg font-bold text-on-surface tracking-tighter">Droma</a>
+<nav class="hidden md:flex items-center gap-10" aria-label="Main">
+<a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-on-surface active" href="#features" data-section="features" data-i18n="nav.features">Features</a>
+<a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-on-surface" href="#tech" data-section="tech" data-i18n="nav.tech">Tech</a>
+<a class="nav-link font-body-md text-body-md text-on-surface-variant hover:text-on-surface" href="#download" data-section="download" data-i18n="nav.download">Download</a>
 </nav>
-<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold scale-95 active:scale-90 transition-transform hover:bg-primary-fixed-dim">
-Get Started
+<div class="flex items-center gap-3">
+<button id="menu-toggle" class="md:hidden p-2 text-on-surface-variant hover:text-on-surface" data-i18n-aria="menu.aria" aria-label="Toggle menu">
+<span class="material-symbols-outlined">menu</span>
 </button>
+<button id="cta-header" class="hidden sm:block bg-primary text-on-primary px-5 py-2 rounded-lg font-bold scale-95 active:scale-90 transition-transform hover:bg-primary-fixed-dim" data-i18n="cta.getStarted">Get Started</button>
+<button type="button" id="lang-toggle" class="hidden sm:flex items-center justify-center px-3 py-2 rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-secondary-fixed-dim hover:border-secondary-fixed-dim transition-colors" data-i18n-aria="lang.aria" aria-label="Switch language"><span data-lang-toggle-label>中文</span></button>
+</div>
+</div>
+<div id="mobile-menu" class="md:hidden border-t border-outline-variant/20 bg-background/95 backdrop-blur-md">
+<nav class="flex flex-col px-container-padding-mobile py-4 gap-4">
+<a class="nav-link font-body-md text-on-surface-variant active" href="#features" data-section="features" data-i18n="nav.features">Features</a>
+<a class="nav-link font-body-md text-on-surface-variant" href="#tech" data-section="tech" data-i18n="nav.tech">Tech</a>
+<a class="nav-link font-body-md text-on-surface-variant" href="#download" data-section="download" data-i18n="nav.download">Download</a>
+<button id="cta-mobile" class="bg-primary text-on-primary px-5 py-3 rounded-lg font-bold w-full mt-2" data-i18n="cta.getStarted">Get Started</button>
+<button type="button" id="lang-toggle-mobile" class="w-full py-3 rounded-lg border border-outline-variant/50 text-on-surface-variant hover:text-secondary-fixed-dim hover:border-secondary-fixed-dim transition-colors font-label-sm text-label-sm" data-i18n-aria="lang.aria" aria-label="Switch language"><span data-lang-toggle-label>中文</span></button>
+</nav>
 </div>
 </header>
 
 <main>
-<section class="relative min-h-screen flex items-center px-container-padding-desktop max-w-7xl mx-auto pt-20">
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
-<div class="z-10">
-<span class="inline-block px-3 py-1 bg-surface-container-high rounded-full font-label-sm text-label-sm text-secondary-fixed-dim mb-6">
-MOBILE AI ARCHITECTURE v2.0
-</span>
-<h1 class="font-display-lg text-display-lg text-on-surface mb-8 max-w-xl">
+
+<!-- ========== FEATURES ========== -->
+<div id="features" class="page-section">
+<section class="relative min-h-screen flex items-center pt-24 w-full overflow-x-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_50vw] gap-8 lg:gap-12 items-center w-full">
+<div class="z-10 px-container-padding-mobile md:px-container-padding-desktop lg:pl-[max(1.25rem,calc((100vw-80rem)/2+2.5rem))]">
+<span class="section-tag mb-6" data-i18n="features.tag">Features</span>
+<h1 class="font-display-lg text-display-lg md:text-[48px] text-on-surface mb-8 max-w-xl" data-i18n="hero.title">
 Droma: The Power of AI, Carved into Your Phone.
 </h1>
-<p class="text-on-surface-variant max-w-md mb-10 leading-relaxed">
+<p class="text-on-surface-variant max-w-md mb-10 leading-relaxed" data-i18n="hero.subtitle">
 Experience industrial-grade local LLM deployment. Engineered for performance, privacy, and the precision of machined titanium.
 </p>
-<div class="flex gap-4">
-<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-bold transition-all hover:bg-primary-fixed hover:shadow-[0_0_20px_rgba(0,219,233,0.2)]">
-Launch Console
+<div class="flex flex-wrap gap-4">
+<button class="cta-download bg-primary text-on-primary px-8 py-4 rounded-lg font-bold transition-all hover:bg-primary-fixed hover:shadow-[0_0_20px_rgba(0,219,233,0.2)]" data-i18n="hero.launchConsole">
+Download
 </button>
-<button class="border border-outline px-8 py-4 rounded-lg font-bold transition-all hover:border-secondary-fixed-dim hover:text-secondary-fixed-dim">
+<a href="docs.html" class="border border-outline px-8 py-4 rounded-lg font-bold transition-all hover:border-secondary-fixed-dim hover:text-secondary-fixed-dim inline-block text-center" data-i18n="hero.documentation">
 Documentation
-</button>
+</a>
 </div>
 </div>
-<div class="relative flex justify-center lg:justify-end">
-<div class="relative w-full max-w-2xl">
-<img alt="Droma Hero Sculpture" class="w-full h-auto drop-shadow-[0_0_60px_rgba(0,219,233,0.1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiO644IT9HgPltH4wCl8-gkWs6G1U5bvXoUAQ4HZX1fYufmxJd6u9JnNTwXLrvCtzAsy3udHITcn1ytnbHj7xypeaWTboBAE4Iq9qaoJhoUOJt5ZO0PHom38lKo6pTCyWcVZpXPmNJu_uLT8OOtcrdPL8e_HgtIRqJL5shCwzb4eWmB59wklLpC0gSH84sZMKQrZYI19kp2IaEOOs8Jw5QaJaCROwJVpy5vIL1Y9KKDaHdcAh5y5XRzebYtgwg3WzPQyyuob0PKzx7"/>
+<div class="relative w-full min-w-0 pb-10 lg:justify-self-stretch">
+<div class="relative w-full hero-carousel mx-auto lg:mx-0" id="hero-carousel" data-i18n-aria="hero.carouselAria" aria-label="Droma product gallery" aria-live="polite">
+<div class="hero-carousel-dots" role="tablist" data-i18n-aria="hero.chooseSlide" aria-label="Choose slide"></div>
 </div>
 </div>
 </div>
-<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
-<span class="font-label-sm text-label-sm tracking-widest uppercase">Explore</span>
+<a href="#tech" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hover:opacity-80 transition-opacity">
+<span class="font-label-sm text-label-sm tracking-widest uppercase" data-i18n="hero.explore">Explore</span>
 <span class="material-symbols-outlined animate-bounce">expand_more</span>
-</div>
+</a>
 </section>
 
-<section class="py-section-margin px-container-padding-desktop max-w-7xl mx-auto">
+<section class="py-section-margin px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
 <div class="mb-16">
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Technical Luxury</h2>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4" data-i18n="features.luxury.title">Technical Luxury</h2>
+<p class="text-on-surface-variant max-w-2xl mb-4" data-i18n="features.luxury.desc">Everything you need to run powerful AI models locally — without compromising speed or security.</p>
 <div class="h-px w-24 bg-secondary-fixed-dim"></div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-12 gap-bento-gap">
-<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl relative overflow-hidden group transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<div class="md:col-span-8 bg-surface-container-lowest border-2 border-outline-variant/30 p-8 rounded-xl relative overflow-hidden group transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
 <div class="flex justify-between items-start mb-12">
 <div>
-<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">NPU Acceleration</h3>
-<p class="text-on-surface-variant max-w-md">Proprietary neural engines optimized for local inference with zero latency hardware handshake.</p>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2" data-i18n="features.npu.title">NPU Acceleration</h3>
+<p class="text-on-surface-variant max-w-md" data-i18n="features.npu.desc">Proprietary neural engines optimized for local inference with zero latency hardware handshake.</p>
 </div>
 <span class="material-symbols-outlined text-secondary-fixed-dim text-4xl">memory</span>
 </div>
 <div class="mt-8 flex items-end justify-between">
 <div class="font-label-sm text-label-sm text-on-surface-variant space-y-1">
-<div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></div> CORE STATUS: OPTIMIZED</div>
-<div class="flex items-center gap-2 text-outline">LATENCY: 0.04ms</div>
+<div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></div> <span data-i18n="features.npu.status">CORE STATUS: OPTIMIZED</span></div>
+<div class="flex items-center gap-2 text-outline" data-i18n="features.npu.latency">LATENCY: 0.04ms</div>
 </div>
-<img class="w-32 h-32 object-cover rounded-lg opacity-40 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9l-qhOhJcMoNmHa1kAJm940bahf5ijzqoRFHZzUACpDWgu1qQfSFhUzcjcjPPjeRE9QJTRMgusEYrDgWY4kOe5oSnd1nntYMNaTnrCM_NyLKlQHb_ugakKM_-MZpZxB1yY4xWoryXNo5d0OMw1XyoVXppKLRR5ICcEBWj4S64qdEjBMoJiMfQOdHejgFsSfVibQ3_iLYdzqXabcFUIf6BCQLxGXE2iA3lfXl-yLtg23YxEwPIXKAeiRziUI7PojCv4semNBil3Bis"/>
+<img class="w-32 h-32 object-cover rounded-lg opacity-40 group-hover:opacity-100 transition-opacity" data-i18n-alt="features.npu.imgAlt" alt="NPU acceleration" src="src/cpu_pic.png"/>
 </div>
 </div>
-<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl flex flex-col justify-between transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<div class="md:col-span-4 bg-surface-container-lowest border-2 border-outline-variant/30 p-8 rounded-xl flex flex-col justify-between transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
 <div>
 <div class="flex justify-between mb-8">
 <span class="material-symbols-outlined text-secondary-fixed-dim">encrypted</span>
 <div class="w-2 h-2 rounded-full bg-secondary-fixed-dim shadow-[0_0_8px_#00dbe9]"></div>
 </div>
-<h3 class="font-headline-lg text-headline-lg text-on-surface mb-4">Privacy First</h3>
-<p class="text-on-surface-variant">Your data never leaves the hardware. Localized weights, zero cloud telemetry.</p>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4" data-i18n="features.privacy.title">Privacy First</h3>
+<p class="text-on-surface-variant" data-i18n="features.privacy.desc">Your data never leaves the hardware. Localized weights, zero cloud telemetry.</p>
 </div>
 <div class="mt-8 pt-8 border-t border-outline-variant/20">
 <code class="font-label-sm text-label-sm text-outline">ENCRYPTION: AES-256-GCM</code>
 </div>
 </div>
-<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
-<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-6 uppercase tracking-widest">Neural Synapse</h3>
+<div class="md:col-span-4 bg-surface-container-lowest border-2 border-outline-variant/30 p-8 rounded-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-6 uppercase tracking-widest" data-i18n="features.neural.title">Neural Synapse</h3>
 <div class="flex flex-col gap-4">
 <div class="h-1 bg-surface-container-high w-full rounded-full overflow-hidden">
 <div class="h-full bg-secondary-fixed-dim w-3/4"></div>
@@ -227,71 +379,299 @@ Documentation
 <div class="h-full bg-secondary-fixed-dim w-5/6"></div>
 </div>
 </div>
-<p class="mt-8 text-on-surface-variant font-label-sm text-label-sm">DYNAMIC RESOURCE ALLOCATION ACTIVE</p>
+<p class="mt-8 text-on-surface-variant font-label-sm text-label-sm" data-i18n="features.neural.active">DYNAMIC RESOURCE ALLOCATION ACTIVE</p>
 </div>
-<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant/30 p-8 rounded-xl group relative overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
+<div class="md:col-span-8 bg-surface-container-lowest border-2 border-outline-variant/30 p-8 rounded-xl group relative overflow-hidden transition-all duration-500 hover:-translate-y-1 hover:shadow-lg">
 <div class="z-10 relative">
-<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">Seamless Integration</h3>
-<p class="text-on-surface-variant max-w-sm">Connect your local models to any interface via the Droma Bridge API.</p>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2" data-i18n="features.integration.title">Seamless Local Knowledge Base &amp; RAG Integration</h3>
+<p class="text-on-surface-variant max-w-sm" data-i18n="features.integration.desc">Connect your local models to any interface via the Droma Bridge API.</p>
 </div>
 <div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition-opacity">
 <span class="material-symbols-outlined text-[160px]">settings_input_component</span>
 </div>
 </div>
 </div>
-</section>
 
-<section class="py-section-margin px-container-padding-desktop relative overflow-hidden">
+<div class="mt-bento-gap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-bento-gap">
+<div class="bg-surface-container-lowest border-2 border-outline-variant/30 p-6 rounded-xl transition-all duration-500 hover:-translate-y-1 hover:border-secondary-fixed-dim/30">
+<span class="material-symbols-outlined text-secondary-fixed-dim mb-4">model_training</span>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface mb-2" data-i18n="features.modelHub.title">Model Hub</h3>
+<p class="text-on-surface-variant text-sm" data-i18n="features.modelHub.desc">Import GGUF, ONNX, and custom weights. One-tap quantization for your device tier.</p>
+</div>
+<div class="bg-surface-container-lowest border-2 border-outline-variant/30 p-6 rounded-xl transition-all duration-500 hover:-translate-y-1 hover:border-secondary-fixed-dim/30">
+<span class="material-symbols-outlined text-secondary-fixed-dim mb-4">chat</span>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface mb-2" data-i18n="features.chat.title">Multi-Session Chat</h3>
+<p class="text-on-surface-variant text-sm" data-i18n="features.chat.desc">Parallel conversations with isolated context windows and persistent local history.</p>
+</div>
+<div class="bg-surface-container-lowest border-2 border-outline-variant/30 p-6 rounded-xl sm:col-span-2 lg:col-span-1 transition-all duration-500 hover:-translate-y-1 hover:border-secondary-fixed-dim/30">
+<span class="material-symbols-outlined text-secondary-fixed-dim mb-4">tune</span>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface mb-2" data-i18n="features.control.title">Fine Control</h3>
+<p class="text-on-surface-variant text-sm" data-i18n="features.control.desc">Temperature, top-p, context length — full inference parameters at your fingertips.</p>
+</div>
+</div>
+</section>
+</div>
+
+<!-- ========== TECH ========== -->
+<div id="tech" class="page-section border-t border-outline-variant/20">
+<section class="py-section-margin px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<div class="mb-16">
+<span class="section-tag mb-4" data-i18n="tech.tag">Tech</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4" data-i18n="tech.title">Architecture Under the Hood</h2>
+<p class="text-on-surface-variant max-w-2xl mb-4" data-i18n="tech.desc">Droma v2.0 stacks a mobile-native runtime on top of hardware-accelerated inference — designed for offline-first deployment.</p>
+<div class="h-px w-24 bg-secondary-fixed-dim"></div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+<div class="space-y-0 max-w-md mx-auto lg:mx-0 w-full">
+<div class="arch-layer">
+<div class="flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed-dim mb-1" data-i18n="tech.layer04.label">LAYER 04</div>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface" data-i18n="tech.layer04.title">Droma Console UI</h3>
+</div>
+<span class="material-symbols-outlined text-outline">dashboard</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-3" data-i18n="tech.layer04.desc">React Native shell · real-time token streaming · model switcher</p>
+</div>
+<div class="arch-connector"></div>
+<div class="arch-layer">
+<div class="flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed-dim mb-1" data-i18n="tech.layer03.label">LAYER 03</div>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface" data-i18n="tech.layer03.title">Droma Bridge API</h3>
+</div>
+<span class="material-symbols-outlined text-outline">hub</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-3" data-i18n="tech.layer03.desc">REST + WebSocket · OpenAI-compatible endpoints · plugin hooks</p>
+</div>
+<div class="arch-connector"></div>
+<div class="arch-layer">
+<div class="flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed-dim mb-1" data-i18n="tech.layer02.label">LAYER 02</div>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface" data-i18n="tech.layer02.title">Inference Engine</h3>
+</div>
+<span class="material-symbols-outlined text-outline">psychology</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-3" data-i18n="tech.layer02.desc">llama.cpp core · Metal / Vulkan / NNAPI backends · KV-cache pooling</p>
+</div>
+<div class="arch-connector"></div>
+<div class="arch-layer border-secondary-fixed-dim/30">
+<div class="flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed-dim mb-1" data-i18n="tech.layer01.label">LAYER 01</div>
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-surface" data-i18n="tech.layer01.title">Hardware Runtime</h3>
+</div>
+<span class="material-symbols-outlined text-secondary-fixed-dim">developer_board</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-3" data-i18n="tech.layer01.desc">NPU / GPU dispatch · thermal-aware throttling · unified memory mapping</p>
+</div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-bento-gap">
+<div class="bg-surface-container-lowest border-2 border-outline-variant/30 p-6 rounded-xl">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4" data-i18n="tech.formats.title">Supported Formats</h4>
+<ul class="space-y-3 font-label-sm text-label-sm">
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> GGUF (Q4_K_M – Q8_0)</li>
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> ONNX Runtime Mobile</li>
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> SafeTensors (import pipeline)</li>
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> Custom Droma Pack (.drp)</li>
+</ul>
+</div>
+<div class="bg-surface-container-lowest border-2 border-outline-variant/30 p-6 rounded-xl">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4" data-i18n="tech.backends.title">Backends</h4>
+<ul class="space-y-3 font-label-sm text-label-sm">
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> Apple Metal + ANE</li>
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> Android NNAPI / Vulkan</li>
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> Qualcomm Hexagon DSP</li>
+<li class="flex items-center gap-2"><span class="text-secondary-fixed-dim">▸</span> CPU fallback (AVX2 / NEON)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-bento-gap">
+<div class="text-center p-6 bg-surface-container-lowest border-2 border-outline-variant/30 rounded-xl">
+<div class="font-display-lg text-display-lg text-secondary-fixed-dim mb-1">38</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant" data-i18n="tech.stat.tokens">TOKENS / SEC</div>
+<div class="text-xs text-outline mt-1" data-i18n="tech.stat.tokensNote">7B Q4 · iPhone 15 Pro</div>
+</div>
+<div class="text-center p-6 bg-surface-container-lowest border-2 border-outline-variant/30 rounded-xl">
+<div class="font-display-lg text-display-lg text-secondary-fixed-dim mb-1">&lt;4GB</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant" data-i18n="tech.stat.ram">RAM FOOTPRINT</div>
+<div class="text-xs text-outline mt-1" data-i18n="tech.stat.ramNote">8K context window</div>
+</div>
+<div class="text-center p-6 bg-surface-container-lowest border-2 border-outline-variant/30 rounded-xl">
+<div class="font-display-lg text-display-lg text-secondary-fixed-dim mb-1">100%</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant" data-i18n="tech.stat.offline">OFFLINE READY</div>
+<div class="text-xs text-outline mt-1" data-i18n="tech.stat.offlineNote">Zero network calls</div>
+</div>
+<div class="text-center p-6 bg-surface-container-lowest border-2 border-outline-variant/30 rounded-xl">
+<div class="font-display-lg text-display-lg text-secondary-fixed-dim mb-1">AES</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">256-GCM</div>
+<div class="text-xs text-outline mt-1" data-i18n="tech.stat.encNote">At-rest encryption</div>
+</div>
+</div>
+
+<div class="mt-16 overflow-x-auto">
+<table class="w-full min-w-[600px] border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/40">
+<th class="text-left py-4 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="tech.table.component">Component</th>
+<th class="text-left py-4 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="tech.table.technology">Technology</th>
+<th class="text-left py-4 px-4 font-label-sm text-label-sm text-on-surface-variant uppercase" data-i18n="tech.table.version">Version</th>
+</tr>
+</thead>
+<tbody class="font-label-sm text-label-sm">
+<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-on-surface" data-i18n="tech.table.inference">Inference Core</td>
+<td class="py-4 px-4 text-on-surface-variant" data-i18n="tech.table.inferenceTech">llama.cpp + custom ops</td>
+<td class="py-4 px-4 text-secondary-fixed-dim">b4281</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-on-surface" data-i18n="tech.table.shell">Mobile Shell</td>
+<td class="py-4 px-4 text-on-surface-variant" data-i18n="tech.table.shellTech">React Native · Hermes</td>
+<td class="py-4 px-4 text-secondary-fixed-dim">0.76</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-on-surface" data-i18n="tech.table.bridge">Bridge API</td>
+<td class="py-4 px-4 text-on-surface-variant" data-i18n="tech.table.bridgeTech">OpenAPI 3.1 · WS</td>
+<td class="py-4 px-4 text-secondary-fixed-dim">v2.0</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 px-4 text-on-surface" data-i18n="tech.table.security">Security</td>
+<td class="py-4 px-4 text-on-surface-variant" data-i18n="tech.table.securityTech">Secure Enclave · Keychain</td>
+<td class="py-4 px-4 text-secondary-fixed-dim" data-i18n="tech.table.platform">Platform</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+
+<!-- ========== DOWNLOAD ========== -->
+<div id="download" class="page-section">
+<section class="py-section-margin px-container-padding-mobile md:px-container-padding-desktop relative overflow-hidden">
 <div class="orbit-line w-[600px] h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20"></div>
 <div class="orbit-line w-[800px] h-[800px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
 <div class="orbit-line w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
-<div class="max-w-4xl mx-auto bg-surface-container-lowest/80 backdrop-blur-xl border border-outline-variant/30 p-16 rounded-3xl text-center relative z-10">
-<h2 class="font-display-lg text-display-lg text-on-surface mb-6">Own the Edge.</h2>
-<p class="text-on-surface-variant mb-12 max-w-xl mx-auto">
+
+<div class="max-w-7xl mx-auto">
+<div class="mb-12 text-center">
+<span class="section-tag mb-4" data-i18n="download.tag">Download</span>
+<h2 class="font-display-lg text-display-lg md:text-[48px] text-on-surface mb-6" data-i18n="download.title">Own the Edge.</h2>
+<p class="text-on-surface-variant mb-4 max-w-xl mx-auto" data-i18n="download.desc">
 Download the Droma Mobile Console and unlock the full potential of your device's neural processing unit.
 </p>
-<div class="flex flex-col md:flex-row items-center justify-center gap-12">
-<div class="p-4 bg-white rounded-2xl shadow-[0_0_40px_rgba(0,219,233,0.1)]">
-<div class="w-40 h-40 bg-surface-container flex items-center justify-center border border-outline-variant">
-<span class="material-symbols-outlined text-on-surface text-6xl">qr_code_2</span>
+<p class="font-label-sm text-label-sm text-secondary-fixed-dim" data-i18n="download.version">Latest release · v2.0.4 · Build 240518</p>
+</div>
+
+<div class="max-w-4xl mx-auto bg-surface-container-lowest/80 backdrop-blur-xl border-2 border-outline-variant/30 p-8 md:p-16 rounded-3xl relative z-10 mb-16">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl mx-auto">
+<a href="#" class="platform-card flex flex-col items-center p-6 rounded-xl border-2 border-outline-variant/40 bg-surface-container-low hover:no-underline group text-center">
+<div class="platform-card-qr">
+<img data-i18n-alt="download.qrGoogleAlt" alt="Google Play download QR code" width="120" height="120" src="src/qr_google_play.png" data-fallback-qr="https://play.google.com/store/apps/details?id=com.droma"/>
+</div>
+<div class="flex items-center gap-4 w-full justify-center">
+<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary-fixed-dim transition-colors shrink-0">
+<span class="material-symbols-outlined group-hover:text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">android</span>
+</div>
+<div class="text-left">
+<div class="font-label-sm text-label-sm text-outline" data-i18n="download.android">Android 12+</div>
+<div class="font-bold text-on-surface">Google Play</div>
 </div>
 </div>
-<div class="text-left space-y-4">
-<div class="flex items-center gap-4 group cursor-pointer">
-<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary-fixed-dim transition-colors">
-<span class="material-symbols-outlined group-hover:text-secondary-fixed-dim">apps</span>
+</a>
+<a href="#" class="platform-card flex flex-col items-center p-6 rounded-xl border-2 border-outline-variant/40 bg-surface-container-low hover:no-underline group text-center">
+<div class="platform-card-qr">
+<img data-i18n-alt="download.qrAppleAlt" alt="App Store download QR code" width="120" height="120" src="src/qr_app_store.png" data-fallback-qr="https://apps.apple.com/app/droma/id000000000"/>
 </div>
-<div>
-<div class="font-label-sm text-label-sm text-outline">Available on</div>
+<div class="flex items-center gap-4 w-full justify-center">
+<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary-fixed-dim transition-colors shrink-0">
+<span class="material-symbols-outlined group-hover:text-secondary-fixed-dim">phone_iphone</span>
+</div>
+<div class="text-left">
+<div class="font-label-sm text-label-sm text-outline" data-i18n="download.ios">iOS 16+</div>
 <div class="font-bold text-on-surface">App Store</div>
 </div>
 </div>
-<div class="flex items-center gap-4 group cursor-pointer">
-<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center group-hover:border-secondary-fixed-dim transition-colors">
-<span class="material-symbols-outlined group-hover:text-secondary-fixed-dim" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</a>
 </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
 <div>
-<div class="font-label-sm text-label-sm text-outline">Available on</div>
-<div class="font-bold text-on-surface">Play Store</div>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6" data-i18n="download.requirements">System Requirements</h3>
+<div class="space-y-4">
+<div class="flex gap-4 p-4 rounded-xl border-2 border-outline-variant/30 bg-surface-container-lowest/60">
+<span class="material-symbols-outlined text-secondary-fixed-dim shrink-0">memory_alt</span>
+<div>
+<div class="font-bold text-on-surface text-sm mb-1" data-i18n="download.ram">RAM</div>
+<p class="text-on-surface-variant text-sm" data-i18n="download.ramDesc">Minimum 6 GB · Recommended 8 GB+ for 7B models</p>
 </div>
 </div>
+<div class="flex gap-4 p-4 rounded-xl border-2 border-outline-variant/30 bg-surface-container-lowest/60">
+<span class="material-symbols-outlined text-secondary-fixed-dim shrink-0">storage</span>
+<div>
+<div class="font-bold text-on-surface text-sm mb-1" data-i18n="download.storage">Storage</div>
+<p class="text-on-surface-variant text-sm" data-i18n="download.storageDesc">2 GB app + 4–12 GB per model (varies by quantization)</p>
+</div>
+</div>
+<div class="flex gap-4 p-4 rounded-xl border-2 border-outline-variant/30 bg-surface-container-lowest/60">
+<span class="material-symbols-outlined text-secondary-fixed-dim shrink-0">speed</span>
+<div>
+<div class="font-bold text-on-surface text-sm mb-1" data-i18n="download.processor">Processor</div>
+<p class="text-on-surface-variant text-sm" data-i18n="download.processorDesc">Snapdragon 8 Gen 2+, Apple A15+, or equivalent with NPU support</p>
+</div>
+</div>
+</div>
+</div>
+
+<div>
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6" data-i18n="download.quickStart">Quick Start</h3>
+<ol class="space-y-6">
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-secondary-fixed-dim/50 flex items-center justify-center font-label-sm text-label-sm text-secondary-fixed-dim">1</span>
+<div>
+<div class="font-bold text-on-surface mb-1" data-i18n="download.step1.title">Install Droma</div>
+<p class="text-on-surface-variant text-sm" data-i18n="download.step1.desc">Download from your platform store or scan the QR code on the matching card above.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-secondary-fixed-dim/50 flex items-center justify-center font-label-sm text-label-sm text-secondary-fixed-dim">2</span>
+<div>
+<div class="font-bold text-on-surface mb-1" data-i18n="download.step2.title">Import a Model</div>
+<p class="text-on-surface-variant text-sm" data-i18n="download.step2.desc">Open Model Hub → Import GGUF or browse the curated Droma catalog.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full border border-secondary-fixed-dim/50 flex items-center justify-center font-label-sm text-label-sm text-secondary-fixed-dim">3</span>
+<div>
+<div class="font-bold text-on-surface mb-1" data-i18n="download.step3.title">Launch Inference</div>
+<p class="text-on-surface-variant text-sm" data-i18n="download.step3.desc">Select your model, tune parameters, and start chatting — fully offline.</p>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
 </section>
+</div>
+
 </main>
 
 <footer class="bg-surface w-full py-16 border-t border-outline-variant/20">
-<div class="flex flex-col md:flex-row justify-between items-center px-container-padding-desktop gap-6 max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-container-padding-mobile md:px-container-padding-desktop gap-6 max-w-7xl mx-auto">
 <div class="flex flex-col items-center md:items-start gap-4">
 <div class="font-display-lg text-headline-lg font-bold text-on-surface">Droma</div>
-<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Droma. Carved for Performance.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant" data-i18n="footer.tagline">© 2024 Droma. Carved for Performance.</p>
 </div>
-<div class="flex gap-8 mt-8 md:mt-0">
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Documentation</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Privacy</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Security</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#">Terms</a>
+<div class="flex flex-wrap justify-center gap-6 md:gap-8">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="docs.html" data-i18n="footer.documentation">Documentation</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#" data-i18n="footer.privacy">Privacy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#" data-i18n="footer.security">Security</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary-fixed-dim transition-colors" href="#" data-i18n="footer.terms">Terms</a>
 </div>
 </div>
 </footer>
@@ -304,13 +684,20 @@ canvas.width = w; canvas.height = h;
 
 const points = [];
 const mouse = { x: -1000, y: -1000, radius: 160 };
+const PARTICLE_SPEED_MIN = 0.75;
+const PARTICLE_SPEED_MAX = 1.65;
+const PARTICLE_RADIUS_MIN = 0.8;
+const PARTICLE_RADIUS_MAX = 3.4;
 
 class Point {
   constructor(){
     this.x = Math.random()*w;
     this.y = Math.random()*h;
-    this.vx = (Math.random()-0.5)*0.4;
-    this.vy = (Math.random()-0.5)*0.4;
+    const speed = PARTICLE_SPEED_MIN + Math.random() * (PARTICLE_SPEED_MAX - PARTICLE_SPEED_MIN);
+    const angle = Math.random() * Math.PI * 2;
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed;
+    this.radius = PARTICLE_RADIUS_MIN + Math.random() * (PARTICLE_RADIUS_MAX - PARTICLE_RADIUS_MIN);
   }
   update(){
     this.x += this.vx;
@@ -329,10 +716,10 @@ class Point {
   draw(){
     ctx.save();
     ctx.shadowColor = "#00dbe9";
-    ctx.shadowBlur = 6;
+    ctx.shadowBlur = 4 + this.radius * 2;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 1.8, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,219,233,0.4)';
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(0,219,233,${0.28 + this.radius * 0.06})`;
     ctx.fill();
     ctx.restore();
   }
@@ -378,6 +765,182 @@ window.addEventListener('mousemove',e=>{mouse.x=e.x;mouse.y=e.y});
 window.addEventListener('resize',()=>{
   w=innerWidth;h=innerHeight;canvas.width=w;canvas.height=h;init();
 });
+
+/* Navigation */
+const sections = ['features', 'tech', 'download'];
+const navLinks = document.querySelectorAll('.nav-link[data-section]');
+const mobileMenu = document.getElementById('mobile-menu');
+const menuToggle = document.getElementById('menu-toggle');
+
+function setActiveNav(id) {
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.dataset.section === id);
+  });
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    menuToggle.querySelector('.material-symbols-outlined').textContent = 'menu';
+  });
+});
+
+menuToggle.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  menuToggle.querySelector('.material-symbols-outlined').textContent = open ? 'close' : 'menu';
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setActiveNav(entry.target.id);
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+function scrollToDownload() {
+  document.getElementById('download')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+document.querySelectorAll('.cta-download, #cta-header, #cta-mobile').forEach(btn => {
+  btn.addEventListener('click', scrollToDownload);
+});
+
+/* Hero carousel — images from src/hero-images.json (all files in src/) */
+const HERO_IMAGE_FALLBACK = [
+  'wawoo_heros (1).png',
+  'wawoo_heros (2).png',
+  'wawoo_heros (3).png',
+  'wawoo_heros (4).png'
+];
+
+function heroSrc(filename) {
+  return 'src/' + filename.split('/').map(encodeURIComponent).join('/');
+}
+
+async function loadHeroImageList() {
+  try {
+    const res = await fetch('src/hero-images.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.statusText);
+    const list = await res.json();
+    if (Array.isArray(list) && list.length) return list;
+  } catch (_) { /* file:// or missing manifest */ }
+  return HERO_IMAGE_FALLBACK;
+}
+
+(async function initHeroCarousel() {
+  const root = document.getElementById('hero-carousel');
+  if (!root) return;
+
+  const dotsRoot = root.querySelector('.hero-carousel-dots');
+  const files = await loadHeroImageList();
+  if (!files.length) return;
+
+  const slides = [];
+  const dots = [];
+
+  files.forEach((file, i) => {
+    const img = document.createElement('img');
+    img.className = 'hero-carousel-slide' + (i === 0 ? ' active' : '');
+    img.src = heroSrc(file);
+    img.alt = (window.DromaI18n ? DromaI18n.t('hero.slideAlt') : 'Droma showcase') + ' ' + (i + 1);
+    img.width = 800;
+    img.height = 600;
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    root.insertBefore(img, dotsRoot);
+    slides.push(img);
+
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'hero-carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', window.DromaI18n ? DromaI18n.t('hero.slideAria', { n: i + 1 }) : 'Slide ' + (i + 1));
+    dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    dot.dataset.index = String(i);
+    dotsRoot.appendChild(dot);
+    dots.push(dot);
+  });
+
+  if (slides.length < 2) {
+    dotsRoot.hidden = true;
+    return;
+  }
+
+  let current = 0;
+  let timer = null;
+  const INTERVAL_MS = 2000;
+
+  function goTo(index) {
+    const next = ((index % slides.length) + slides.length) % slides.length;
+    slides[current].classList.remove('active');
+    dots[current]?.classList.remove('active');
+    dots[current]?.setAttribute('aria-selected', 'false');
+    current = next;
+    slides[current].classList.add('active');
+    dots[current]?.classList.add('active');
+    dots[current]?.setAttribute('aria-selected', 'true');
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(() => goTo(current + 1), INTERVAL_MS);
+  }
+
+  function stopAutoplay() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  dots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const i = Number(dot.dataset.index);
+      if (!Number.isNaN(i)) {
+        goTo(i);
+        startAutoplay();
+      }
+    });
+  });
+
+  root.addEventListener('mouseenter', stopAutoplay);
+  root.addEventListener('mouseleave', startAutoplay);
+  root.addEventListener('focusin', stopAutoplay);
+  root.addEventListener('focusout', (e) => {
+    if (!root.contains(e.relatedTarget)) startAutoplay();
+  });
+
+  startAutoplay();
+
+  document.addEventListener('droma:langchange', () => {
+    slides.forEach((img, i) => {
+      img.alt = DromaI18n.t('hero.slideAlt') + ' ' + (i + 1);
+    });
+    dots.forEach((dot, i) => {
+      dot.setAttribute('aria-label', DromaI18n.t('hero.slideAria', { n: i + 1 }));
+    });
+    root.setAttribute('aria-label', DromaI18n.t('hero.carouselAria'));
+    dotsRoot.setAttribute('aria-label', DromaI18n.t('hero.chooseSlide'));
+  });
+})();
+
+DromaI18n.init();
+
+/* Platform download QR — local src/qr_*.png, else generate from store URL */
+(function initPlatformQrImages() {
+  const QR_API = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=';
+  document.querySelectorAll('.platform-card-qr img[data-fallback-qr]').forEach((img) => {
+    const storeUrl = img.dataset.fallbackQr;
+    img.addEventListener('error', () => {
+      if (storeUrl && !img.dataset.fallbackApplied) {
+        img.dataset.fallbackApplied = '1';
+        img.src = QR_API + encodeURIComponent(storeUrl);
+      }
+    }, { once: true });
+  });
+})();
 </script>
 </body>
 </html>
